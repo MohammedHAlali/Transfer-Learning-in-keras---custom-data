@@ -2,6 +2,7 @@
 import numpy as np
 import os
 import time
+import datetime
 from resnet50 import ResNet50
 from keras.preprocessing import image
 from keras.layers import GlobalAveragePooling2D, Dense, Dropout,Activation,Flatten
@@ -11,7 +12,7 @@ from keras.layers import Input
 from keras.models import Model
 from keras.utils import np_utils
 from sklearn.utils import shuffle
-from sklearn.cross_validation import train_test_split
+from sklearn.model_selection import train_test_split
 
 img_path = 'elephant.jpg'
 img = image.load_img(img_path, target_size=(224, 224))
@@ -92,7 +93,7 @@ custom_resnet_model.compile(loss='categorical_crossentropy',optimizer='adam',met
 
 t=time.time()
 hist = custom_resnet_model.fit(X_train, y_train, batch_size=32, epochs=12, verbose=1, validation_data=(X_test, y_test))
-print('Training time: %s' % (t - time.time()))
+print('Training time: %s' % str(datetime.timedelta(seconds=(time.time() - t)))) #print time more organized
 (loss, accuracy) = custom_resnet_model.evaluate(X_test, y_test, batch_size=10, verbose=1)
 
 print("[INFO] loss={:.4f}, accuracy: {:.4f}%".format(loss,accuracy * 100))
